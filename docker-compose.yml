@@ -1,0 +1,38 @@
+services:
+  mlflow:
+    image: ghcr.io/mlflow/mlflow:v3.14.0
+    command: >
+      mlflow server
+      --host 0.0.0.0
+      --port 5000
+      --backend-store-uri sqlite:////mlflow/mlflow.db
+      --artifacts-destination /mlflow/artifacts
+    ports:
+      - "5001:5000"
+    volumes:
+      - mlflow-data:/mlflow
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - import urllib.request; urllib.request.urlopen('http://localhost:5000/health')
+      interval: 10s
+      timeout: 5s
+      retries: 12
+
+  train:
+    build: .
+    depends_on:
+      mlflow:
+        condition: service_healthy
+    environment:
+      # Environment variables take precedence over .env in Pydantic
+      # Settings, so inside the network the tracking URI points at the
+      # mlflow service instead of localhost.
+      MLFLOW_TRACKING_URI: http://mlflow:5000
+    volumes:
+      - .:/app
+
+volumes:
+  mlflow-data:

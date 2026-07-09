@@ -1,0 +1,21 @@
+# Single source of truth for pipeline parameters (one section per DVC stage).
+
+preprocess:
+  min_interactions: 5
+  event_weights:
+    view: 1.0
+    addtocart: 3.0
+    transaction: 5.0
+
+feature_eng:
+  val_size: 1    # interactions per user held out for validation (early stopping)
+  test_size: 1   # interactions per user held out for test (leave-last-out)
+
+train:
+  model: popularity
+  model_params:
+    top_n: 500
+  seed: 42
+
+evaluate:
+  top_k: 10

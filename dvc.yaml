@@ -1,0 +1,52 @@
+stages:
+  preprocess:
+    cmd: python -m recsys.pipelines.preprocess
+    deps:
+      - data/raw
+      - src/recsys/pipelines/preprocess.py
+      - src/recsys/data/preprocessors.py
+    params:
+      - preprocess
+    outs:
+      - data/processed/interactions.parquet
+
+  feature_eng:
+    cmd: python -m recsys.pipelines.feature_eng
+    deps:
+      - data/processed/interactions.parquet
+      - src/recsys/pipelines/feature_eng.py
+      - src/recsys/features/splitting.py
+    params:
+      - feature_eng
+    outs:
+      - data/processed/train.parquet
+      - data/processed/val.parquet
+      - data/processed/test.parquet
+      - data/processed/catalog.json
+
+  train:
+    cmd: python -m recsys.pipelines.train
+    deps:
+      - data/processed/train.parquet
+      - src/recsys/pipelines/train.py
+      - src/recsys/models
+      - src/recsys/training/tracking.py
+    params:
+      - train
+    outs:
+      - models/model.pkl
+      - models/mlflow_run_id.txt
+
+  evaluate:
+    cmd: python -m recsys.pipelines.evaluate
+    deps:
+      - models/model.pkl
+      - models/mlflow_run_id.txt
+      - data/processed/test.parquet
+      - src/recsys/pipelines/evaluate.py
+      - src/recsys/evaluation/metrics.py
+    params:
+      - evaluate
+    metrics:
+      - metrics.json:
+          cache: false
