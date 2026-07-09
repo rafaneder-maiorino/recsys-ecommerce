@@ -73,15 +73,19 @@ stages:
       hash: md5
       md5: 326df61092c0f90591625cf1fec9e57e
       size: 7871252
+    - path: data/processed/val.parquet
+      hash: md5
+      md5: 2f8c28671c25fca4efce32d3972be7de
+      size: 1414785
     - path: src/recsys/models
       hash: md5
-      md5: 08236c784f77000670000c4cc52c8c0e.dir
-      size: 16956
-      nfiles: 8
+      md5: 28ca10d793c083a0d33f00d47999ba81.dir
+      size: 73681
+      nfiles: 14
     - path: src/recsys/pipelines/train.py
       hash: md5
-      md5: cda0750bad770813cefc8c7ce5ac442f
-      size: 1907
+      md5: b256c5accd24336ceb2981670aea4faa
+      size: 2469
     - path: src/recsys/training/tracking.py
       hash: md5
       md5: 19a5bc0fa140e14c299d41fba4e4a4bd
@@ -89,19 +93,35 @@ stages:
     params:
       params.yaml:
         train:
-          model: popularity
-          model_params:
-            top_n: 500
+          model: ncf
           seed: 42
+          configs:
+            popularity:
+              top_n: 500
+            item_knn:
+              history_cap: 50
+            svd:
+              n_components: 64
+            ncf:
+              embedding_dim: 32
+              hidden_dims:
+              - 64
+              - 32
+              dropout: 0.2
+              learning_rate: 0.001
+              batch_size: 4096
+              epochs: 20
+              n_negatives: 4
+              patience: 3
     outs:
     - path: models/mlflow_run_id.txt
       hash: md5
-      md5: 4ddc7efbae7209e1aeae6e15afc63567
+      md5: f0dc2beeb217bae4071f90b4541eb36d
       size: 32
     - path: models/model.pkl
       hash: md5
-      md5: 2c3350216e88cca314faffb8c540b8e9
-      size: 2109441
+      md5: 50747fbe379d19efb1f22f6d52369097
+      size: 25878692
   evaluate:
     cmd: python -m recsys.pipelines.evaluate
     deps:
@@ -109,28 +129,34 @@ stages:
       hash: md5
       md5: 03b8383dd303acff152fb95a4ddb71a4
       size: 1396388
+    - path: data/processed/train.parquet
+      hash: md5
+      md5: 326df61092c0f90591625cf1fec9e57e
+      size: 7871252
     - path: models/mlflow_run_id.txt
       hash: md5
-      md5: 4ddc7efbae7209e1aeae6e15afc63567
+      md5: f0dc2beeb217bae4071f90b4541eb36d
       size: 32
     - path: models/model.pkl
       hash: md5
-      md5: 2c3350216e88cca314faffb8c540b8e9
-      size: 2109441
+      md5: 50747fbe379d19efb1f22f6d52369097
+      size: 25878692
     - path: src/recsys/evaluation/metrics.py
       hash: md5
       md5: 3982b69a88f4597720fd9da277a950e3
       size: 2925
     - path: src/recsys/pipelines/evaluate.py
       hash: md5
-      md5: 28f8fa4b23b84503dee079cbe92c1623
-      size: 1597
+      md5: 2d97cc7334c0cd71e4a32c498e707dc9
+      size: 4704
     params:
       params.yaml:
         evaluate:
           top_k: 10
+          n_negatives: 99
+          seed: 42
     outs:
     - path: metrics.json
       hash: md5
-      md5: 4e798a883eed244fabe87b3c6f7ea2cc
-      size: 166
+      md5: 698d8f92f45b5fdd87b369ad7a082cda
+      size: 157

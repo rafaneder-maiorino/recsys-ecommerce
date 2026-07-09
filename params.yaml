@@ -12,7 +12,7 @@ feature_eng:
   test_size: 1   # interactions per user held out for test (leave-last-out)
 
 train:
-  model: ncf     # one of: popularity | item_knn | svd | ncf
+  model: ncf   # one of: popularity | item_knn | svd | ncf
   seed: 42
   configs:
     popularity:
