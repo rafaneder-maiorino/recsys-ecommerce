@@ -27,7 +27,7 @@ train:
       dropout: 0.2
       learning_rate: 0.001
       batch_size: 4096
-      epochs: 20
+      epochs: 50
       n_negatives: 4
       patience: 3
 

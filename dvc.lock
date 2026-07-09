@@ -110,18 +110,18 @@ stages:
               dropout: 0.2
               learning_rate: 0.001
               batch_size: 4096
-              epochs: 20
+              epochs: 50
               n_negatives: 4
               patience: 3
     outs:
     - path: models/mlflow_run_id.txt
       hash: md5
-      md5: f0dc2beeb217bae4071f90b4541eb36d
+      md5: 7f7cc6a33cb9f9ca642f949bbca18e94
       size: 32
     - path: models/model.pkl
       hash: md5
-      md5: 50747fbe379d19efb1f22f6d52369097
-      size: 25878692
+      md5: 8f6e8a931acb7aba918638e82549146a
+      size: 25878764
   evaluate:
     cmd: python -m recsys.pipelines.evaluate
     deps:
@@ -135,12 +135,12 @@ stages:
       size: 7871252
     - path: models/mlflow_run_id.txt
       hash: md5
-      md5: f0dc2beeb217bae4071f90b4541eb36d
+      md5: 7f7cc6a33cb9f9ca642f949bbca18e94
       size: 32
     - path: models/model.pkl
       hash: md5
-      md5: 50747fbe379d19efb1f22f6d52369097
-      size: 25878692
+      md5: 8f6e8a931acb7aba918638e82549146a
+      size: 25878764
     - path: src/recsys/evaluation/metrics.py
       hash: md5
       md5: 3982b69a88f4597720fd9da277a950e3
@@ -158,5 +158,5 @@ stages:
     outs:
     - path: metrics.json
       hash: md5
-      md5: 698d8f92f45b5fdd87b369ad7a082cda
+      md5: 82e34d32374dabe3f03a83a8e03b8121
       size: 157
