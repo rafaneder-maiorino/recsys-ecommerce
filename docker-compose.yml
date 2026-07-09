@@ -6,7 +6,7 @@ services:
       --host 0.0.0.0
       --port 5000
       --backend-store-uri sqlite:////mlflow/mlflow.db
-      --artifacts-destination /mlflow/artifacts
+      --artifacts-destination /mlflow/artifacts --allowed-hosts "mlflow:*,localhost:*,127.0.0.1:*"
     ports:
       - "5001:5000"
     volumes:
