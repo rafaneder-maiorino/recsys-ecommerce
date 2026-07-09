@@ -30,6 +30,14 @@ def test_recommend_excludes_seen_items() -> None:
     assert recs[0][0] == 9
 
 
+def test_score_returns_global_popularity() -> None:
+    import numpy as np
+
+    model = PopularityModel(top_n=3).fit(_interactions())
+    scores = model.score(np.array([0, 0]), np.array([7, 8]))
+    assert scores[0] > scores[1]
+
+
 def test_recommend_pads_short_lists_with_minus_one() -> None:
     model = PopularityModel(top_n=3).fit(_interactions())
     recs = model.recommend(np.array([0]), top_k=3)

@@ -22,15 +22,32 @@ def main() -> None:
     params = load_params("train")
     set_global_seed(params["seed"])
     train_df = pd.read_parquet(settings.processed_data_dir / "train.parquet")
+    val_df = pd.read_parquet(settings.processed_data_dir / "val.parquet")
     setup_mlflow(settings)
     with mlflow.start_run() as run:
         mlflow.set_tag("model_name", params["model"])
         mlflow.set_tag("train_data_version", read_dataset_version())
+        model_params = params["configs"][params["model"]]
         mlflow.log_params({"model": params["model"], "seed": params["seed"]})
-        mlflow.log_params(params.get("model_params", {}))
-        model = ModelFactory.create(params["model"], **params.get("model_params", {}))
-        model.fit(train_df)
+        mlflow.log_params(model_params)
+        model = ModelFactory.create(params["model"], **model_params)
+        model.fit(train_df, validation=val_df)
+        _log_history(model)
         _persist(model, run.info.run_id)
+
+
+def _log_history(model: object) -> None:
+    """Log per-epoch losses to MLflow when the model exposes them.
+
+    Args:
+        model: Fitted model, optionally carrying ``history_``.
+    """
+    history = getattr(model, "history_", None)
+    if not history:
+        return
+    for metric, values in history.items():
+        for step, value in enumerate(values):
+            mlflow.log_metric(metric, value, step=step)
 
 
 def _persist(model: object, run_id: str) -> None:

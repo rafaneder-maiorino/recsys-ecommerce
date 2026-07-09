@@ -15,8 +15,13 @@ class DummyModel(RecommenderModel):
     def __init__(self, top_n: int = 10) -> None:
         self.top_n = top_n
 
-    def fit(self, interactions: pd.DataFrame) -> "DummyModel":
+    def fit(
+        self, interactions: pd.DataFrame, validation: pd.DataFrame | None = None
+    ) -> "DummyModel":
         return self
+
+    def score(self, user_ids: np.ndarray, item_ids: np.ndarray) -> np.ndarray:
+        return np.zeros(len(user_ids))
 
     def recommend(self, user_ids: np.ndarray, top_k: int = 10) -> np.ndarray:
         return np.zeros((len(user_ids), top_k), dtype=int)

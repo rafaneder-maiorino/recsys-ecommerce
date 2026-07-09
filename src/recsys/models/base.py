@@ -12,18 +12,34 @@ import pandas as pd
 
 
 class RecommenderModel(ABC):
-    """Abstract recommender exposing a unified fit/recommend contract."""
+    """Abstract recommender exposing fit/score/recommend contracts."""
 
     @abstractmethod
-    def fit(self, interactions: pd.DataFrame) -> "RecommenderModel":
+    def fit(
+        self, interactions: pd.DataFrame, validation: pd.DataFrame | None = None
+    ) -> "RecommenderModel":
         """Train the model on a user-item interactions frame.
 
         Args:
             interactions: DataFrame with at least the columns
                 ``user_id``, ``item_id`` and ``weight``.
+            validation: Optional holdout frame with the same columns,
+                used by models that support early stopping.
 
         Returns:
             The fitted model instance (enables fluent chaining).
+        """
+
+    @abstractmethod
+    def score(self, user_ids: np.ndarray, item_ids: np.ndarray) -> np.ndarray:
+        """Score user-item pairs (higher means more relevant).
+
+        Args:
+            user_ids: Array ``(n,)`` of user ids.
+            item_ids: Array ``(n,)`` of item ids, paired with users.
+
+        Returns:
+            Array ``(n,)`` of relevance scores.
         """
 
     @abstractmethod

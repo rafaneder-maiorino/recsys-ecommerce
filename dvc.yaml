@@ -28,6 +28,7 @@ stages:
     cmd: python -m recsys.pipelines.train
     deps:
       - data/processed/train.parquet
+      - data/processed/val.parquet
       - src/recsys/pipelines/train.py
       - src/recsys/models
       - src/recsys/training/tracking.py
@@ -42,6 +43,7 @@ stages:
     deps:
       - models/model.pkl
       - models/mlflow_run_id.txt
+      - data/processed/train.parquet
       - data/processed/test.parquet
       - src/recsys/pipelines/evaluate.py
       - src/recsys/evaluation/metrics.py
