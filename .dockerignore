@@ -1,0 +1,30 @@
+# VCS & DVC internals
+.git/
+.dvc/cache
+.dvc/tmp
+
+# Experiments & notebooks
+*.ipynb
+notebooks/
+
+# Local artifacts and caches
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+.venv/
+mlruns/
+mlartifacts/
+
+# Data and models (pulled via DVC inside the container, not baked in)
+data/
+models/
+
+# Credentials and sensitive variables
+.env
+secrets/
+
+# Docs & misc
+README.md
+docs/
+.DS_Store
