@@ -12,7 +12,7 @@ feature_eng:
   test_size: 1   # interactions per user held out for test (leave-last-out)
 
 train:
-  model: ncf   # one of: popularity | item_knn | svd | ncf
+  model: ncf     # one of: popularity | item_knn | svd | ncf
   seed: 42
   configs:
     popularity:
@@ -27,7 +27,7 @@ train:
       dropout: 0.2
       learning_rate: 0.001
       batch_size: 4096
-      epochs: 50
+      epochs: 20
       n_negatives: 4
       patience: 3
 
@@ -35,3 +35,11 @@ evaluate:
   top_k: 10
   n_negatives: 99   # NCF-paper protocol: rank the positive against 99 unseen items
   seed: 42
+
+promote:
+  registered_model_name: recsys-ncf
+  approved_by: "Rafael Neder Maiorino"
+  approval_notes: "Beats popularity and SVD baselines on all ranking metrics"
+  gates:                  # candidate must meet ALL minimums to reach Production
+    hit_rate_at_10: 0.60  # popularity baseline scored 0.54
+    ndcg_at_10: 0.40      # popularity baseline scored 0.32
