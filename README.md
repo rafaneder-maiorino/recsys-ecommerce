@@ -70,7 +70,7 @@ uv run python scripts/validate_env.py
 Os dados (~940 MB) ficam em um remote DVC no Azure Blob Storage. Para baixá-los com o token de leitura fornecido para avaliação:
 
 ```bash
-uv run dvc remote modify --local azure sas_token "<TOKEN_DE_LEITURA_FORNECIDO>"
+uv run dvc remote modify --local azure sas_token "se=2026-10-31&sp=rl&sv=2026-04-06&sr=c&sig=oZ5hKodQe2dGBNYdUgHuNjm6NmXm%2BOAX0VKz%2BVi6XMU%3D"
 uv run dvc pull
 ```
 
