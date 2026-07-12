@@ -26,6 +26,5 @@ models/
 secrets/
 
 # Docs & misc
-README.md
 docs/
 .DS_Store
