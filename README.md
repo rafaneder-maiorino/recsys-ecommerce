@@ -150,6 +150,16 @@ uv run pre-commit install
 4. **Avaliação amostrada** (99 negativos): mantém a comparação entre modelos idêntica e computacionalmente viável (ranquear o catálogo inteiro com o MLP custaria ~8 bi de forwards).
 5. **Stages + alias no Registry**: o fluxo clássico exigido (deprecado desde o MLflow 2.9) coexiste com o alias `production`, mantendo o projeto à prova de futuro.
 
+## Deploy em produção (bônus)
+
+A API de inferência está publicada no **Azure Container Apps**, servindo o modelo `recsys-ncf` promovido a Production:
+
+- **Health:** https://recsys-api.lemonrock-9ecf7f11.brazilsouth.azurecontainerapps.io/health
+- **Recomendação:** https://recsys-api.lemonrock-9ecf7f11.brazilsouth.azurecontainerapps.io/recommend/42?top_k=5
+- **Documentação interativa (Swagger):** https://recsys-api.lemonrock-9ecf7f11.brazilsouth.azurecontainerapps.io/docs
+
+Build da imagem: `docker buildx build --platform linux/amd64 -f Dockerfile.api ...` (cross-build ARM→x86), registro no Azure Container Registry, deploy com ingress externo e healthcheck.
+
 ---
 
 *Vídeo de apresentação (método STAR): link a adicionar na entrega.*
