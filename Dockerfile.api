@@ -29,6 +29,7 @@ ENV PATH="/opt/venv/bin:$PATH" \
     MODEL_PATH=/app/models/model.pkl
 
 COPY --from=builder /opt/venv /opt/venv
+COPY --from=builder /app/src /app/src
 
 WORKDIR /app
 # Production artifact baked at build time (promoted via the Registry).
