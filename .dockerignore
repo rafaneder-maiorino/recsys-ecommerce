@@ -19,11 +19,13 @@ mlartifacts/
 # Data and models (pulled via DVC inside the container, not baked in)
 data/
 models/
+!models/model.pkl
 
 # Credentials and sensitive variables
 .env
 secrets/
 
 # Docs & misc
+README.md
 docs/
 .DS_Store
