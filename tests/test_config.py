@@ -1,5 +1,7 @@
 """Unit tests for settings and reproducibility helpers."""
 
+from pathlib import Path
+
 import numpy as np
 
 from recsys.config import Settings
@@ -10,7 +12,7 @@ def test_settings_have_safe_defaults() -> None:
     settings = Settings(_env_file=None)
     assert settings.random_seed == 42
     assert settings.mlflow_experiment_name == "recsys-ecommerce"
-    assert str(settings.raw_data_dir) == "data/raw"
+    assert settings.raw_data_dir == Path("data/raw")
 
 
 def test_set_global_seed_makes_numpy_deterministic() -> None:

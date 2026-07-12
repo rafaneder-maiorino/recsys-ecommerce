@@ -63,6 +63,8 @@ Copy-Item .env.example .env
 uv run python scripts/validate_env.py
 ```
 
+> **Windows:** instale o uv com `powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"` (reabra o PowerShell em seguida).
+
 > `uv sync` cumpre o papel de `poetry install`: instalação determinística a partir do lock file commitado (`uv.lock`).
 
 ## Obtendo os dados (DVC)
@@ -108,7 +110,7 @@ O script aplica um **quality gate** (mínimos por métrica definidos em `params.
 ## Qualidade de código
 
 ```bash
-uv run pytest          # 32 testes unitarios
+uv run pytest          # 35 testes unitarios
 uv run ruff check .    # lint (convencao Google, complexidade <= 8)
 uv run pre-commit install
 ```
