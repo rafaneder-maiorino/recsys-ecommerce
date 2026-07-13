@@ -164,4 +164,4 @@ Build da imagem: `docker buildx build --platform linux/amd64 -f Dockerfile.api .
 
 ---
 
-*Vídeo de apresentação (método STAR): link a adicionar na entrega.*
+*Vídeo de apresentação (método STAR): https://youtu.be/gU7bzwPut78*
